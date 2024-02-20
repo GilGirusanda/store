@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         DataManager dataManager = new DataManager("souvenirs_data.txt");
         SouvenirsService souvenirsService = new SouvenirsService(dataManager);
@@ -27,7 +27,7 @@ public class Main {
             System.out.println("4. Exit");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -49,7 +49,7 @@ public class Main {
         }
     }
 
-    private static void addManufacturer(Scanner scanner, SouvenirsService souvenirsService) {
+    private static void addManufacturer(Scanner scanner, SouvenirsService souvenirsService) throws Exception {
         System.out.println("Enter Manufacturer name:");
         String name = scanner.nextLine();
 
@@ -62,72 +62,34 @@ public class Main {
         System.out.println("Manufacturer added:\n" + newManufacturer);
     }
 
-    private static void addSouvenir(Scanner scanner, SouvenirsService souvenirsService) {
+    private static void addSouvenir(Scanner scanner, SouvenirsService souvenirsService) throws Exception {
         System.out.println("Enter Manufacturer name:");
         String manufacturerName = scanner.nextLine();
 
+        if (Objects.isNull(souvenirsService.findManufacturerByName(manufacturerName))) {
+            System.out.println("No such a manufacturer.\n");
+            return;
+        }
+
         System.out.println("Enter Souvenir name:");
-        String name = scanner.nextLine();
+        String souvenirName = scanner.nextLine();
+        if (!Objects.isNull(souvenirsService.findSouvenirByManufacturerAndName(manufacturerName, souvenirName))) {
+            System.out.println("Such a souvenir name is already taken.\n");
+            return;
+        }
 
         System.out.println("Enter Souvenir manufacturer details:");
         String manufacturerDetails = scanner.nextLine();
 
         System.out.println("Enter Souvenir release date (dd.MM.yyyy):");
         String releaseDateStr = scanner.nextLine();
-//        LocalDateTime releaseDate = LocalDate.parse(releaseDateStr, Souvenir.DATE_FORMATTER).atStartOfDay();
 
         System.out.println("Enter Souvenir price:");
         double price = scanner.nextDouble();
 
-//        Souvenir newSouvenir = new Souvenir(name, manufacturerDetails, releaseDate, price);
-        Souvenir newSouvenir = new Souvenir(name, manufacturerDetails, releaseDateStr, price);
+        Souvenir newSouvenir = new Souvenir(souvenirName, manufacturerDetails, releaseDateStr, price);
         souvenirsService.addSouvenir(manufacturerName, newSouvenir);
-
-        if (!Objects.isNull(souvenirsService.findSouvenirByManufacturerAndName(manufacturerName, newSouvenir.getName())))
-            System.out.println("Souvenir added:\n" + newSouvenir);
+        System.out.println("Souvenir details:\n" + newSouvenir);
     }
 
-//    public static void main(String[] args) {
-//        // Create DataManager and SouvenirsService instances
-//        DataManager dataManager = new DataManager("storage.txt");
-//        SouvenirsService souvenirsService = new SouvenirsService(dataManager);
-//
-//        // Create sample data
-//        Manufacturer manufacturer1 = new Manufacturer("Manufacturer1", "Country1");
-//        Manufacturer manufacturer2 = new Manufacturer("Manufacturer2", "Country2");
-//
-//        Souvenir souvenir1 = new Souvenir("Souvenir1", "Details1", LocalDateTime.now(), 20.5);
-//        Souvenir souvenir2 = new Souvenir("Souvenir2", "Details2", LocalDateTime.now(), 15.0);
-//
-//        // Add data using SouvenirsService methods
-//        souvenirsService.addManufacturer(manufacturer1);
-//        souvenirsService.addManufacturer(manufacturer2);
-//
-//        souvenirsService.addSouvenir("Manufacturer1", souvenir1);
-//        souvenirsService.addSouvenir("Manufacturer2", souvenir2);
-//
-//        // Test various methods
-//        testFindManufacturersBySouvenirAndReleaseDate(souvenirsService, "Souvenir1", LocalDateTime.now().getYear());
-//        testUpdateSouvenirName(souvenirsService, "Manufacturer1", "Souvenir1", "NewSouvenirName");
-//
-//        // Display all souvenirs and manufacturers
-//        souvenirsService.displayAllSouvenirsAndManufacturers();
-//    }
-//
-//    private static void testFindManufacturersBySouvenirAndReleaseDate(SouvenirsService souvenirsService, String souvenirName, int year) {
-//        List<Manufacturer> manufacturers = souvenirsService.findManufacturersBySouvenirAndReleaseDate(souvenirName, year);
-//
-//        System.out.println("\nManufacturers for Souvenir '" + souvenirName + "' released in " + year + ":");
-//        manufacturers.forEach(System.out::println);
-//    }
-//
-//    private static void testUpdateSouvenirName(SouvenirsService souvenirsService, String manufacturerName, String oldSouvenirName, String newSouvenirName) {
-//        souvenirsService.updateSouvenirName(manufacturerName, oldSouvenirName, newSouvenirName);
-//
-//        System.out.println("\nSouvenir name updated for Manufacturer '" + manufacturerName + "', Souvenir '" + oldSouvenirName +
-//                "' to '" + newSouvenirName + "':");
-//
-//        // Display all souvenirs and manufacturers after update
-//        souvenirsService.displayAllSouvenirsAndManufacturers();
-//    }
 }

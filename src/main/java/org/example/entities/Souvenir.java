@@ -37,14 +37,14 @@ public class Souvenir implements Serializable {
      * @param releaseDate        The release date of the souvenir.
      * @param price              The price of the souvenir.
      */
-    public Souvenir(String name, String manufacturerDetails, LocalDateTime releaseDate, double price) {
+    public Souvenir(String name, String manufacturerDetails, LocalDateTime releaseDate, double price) throws Exception {
         setName(name);
         setManufacturerDetails(manufacturerDetails);
         setReleaseDate(releaseDate);
         setPrice(price);
     }
 
-    public Souvenir(String name, String manufacturerDetails, String releaseDate, double price) {
+    public Souvenir(String name, String manufacturerDetails, String releaseDate, double price) throws Exception {
         setName(name);
         setManufacturerDetails(manufacturerDetails);
         setReleaseDate(releaseDate);
@@ -96,10 +96,9 @@ public class Souvenir implements Serializable {
      *
      * @param name The name to set for the souvenir.
      */
-    public void setName(String name) {
+    public void setName(String name) throws Exception {
         if(name.isEmpty()) {
-            System.out.println("Souvenir name can't be empty");
-            return;
+            throw new Exception("Souvenir name can't be empty");
         }
         this.name = name;
     }
@@ -109,10 +108,9 @@ public class Souvenir implements Serializable {
      *
      * @param manufacturerDetails The manufacturer details to set for the souvenir.
      */
-    public void setManufacturerDetails(String manufacturerDetails) {
+    public void setManufacturerDetails(String manufacturerDetails) throws Exception {
         if(name.isEmpty()) {
-            System.out.println("Souvenir manufacturer details can't be empty");
-            return;
+            throw new Exception("Souvenir manufacturer details can't be empty");
         }
         this.manufacturerDetails = manufacturerDetails;
     }
@@ -154,10 +152,9 @@ public class Souvenir implements Serializable {
      *
      * @param price The price to set for the souvenir.
      */
-    public void setPrice(double price) {
+    public void setPrice(double price) throws Exception {
         if(price < 0) {
-            System.out.println("Souvenir price can't be negative");
-            return;
+            throw new Exception("Souvenir price can't be negative");
         }
         this.price = price;
     }

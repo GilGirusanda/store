@@ -21,7 +21,7 @@ public class Manufacturer implements Serializable {
      * @param name    The name of the manufacturer.
      * @param country The country where the manufacturer is located.
      */
-    public Manufacturer(String name, String country) {
+    public Manufacturer(String name, String country) throws Exception {
         setName(name);
         setCountry(country);
         this.souvenirs = new ArrayList<>();
@@ -63,10 +63,9 @@ public class Manufacturer implements Serializable {
      *
      * @param name The name to set for the manufacturer.
      */
-    public void setName(String name) {
+    public void setName(String name) throws Exception {
         if(name.isEmpty()) {
-            System.out.println("Manufacturer name can't be empty");
-            return;
+            throw new Exception("Manufacturer name can't be empty");
         }
         this.name = name;
     }
@@ -76,10 +75,9 @@ public class Manufacturer implements Serializable {
      *
      * @param country The country to set for the manufacturer.
      */
-    public void setCountry(String country) {
+    public void setCountry(String country) throws Exception {
         if(country.isEmpty()) {
-            System.out.println("Manufacturer country can't be empty");
-            return;
+            throw new Exception("Manufacturer country can't be empty");
         }
         this.country = country;
     }
@@ -103,10 +101,7 @@ public class Manufacturer implements Serializable {
      */
     public void addSouvenirs(List<Souvenir> souvenirs) {
         for(Souvenir souvenir: souvenirs) {
-            Optional<Souvenir> souvenirOpt = Optional.of(souvenir);
-            souvenirOpt.ifPresentOrElse(this.souvenirs::add, () -> {
-                System.out.println("Can't add a souvenir. Value is absent.");
-            });
+            addSouvenir(souvenir);
         }
     }
 
@@ -117,7 +112,8 @@ public class Manufacturer implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("Manufacturer(name = %s, country = %s)", this.name, this.country);
+//        return String.format("Manufacturer(\nname = %s, \ncountry = %s, \nsouvenirs = %s)", this.name, this.country, this.souvenirs);
+        return String.format("Manufacturer(\nname = %s, \ncountry = %s)", this.name, this.country);
     }
 
     /**

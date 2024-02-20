@@ -124,19 +124,26 @@ public class SouvenirsService {
                 .filter(m -> m.getName().equals(manufacturerName))
                 .findFirst();
 
-        manufacturerOpt.ifPresent(manufacturer -> {
-            if (isSouvenirUnique(manufacturer, newSouvenir)) {
-                manufacturer.addSouvenir(newSouvenir);
+        if (manufacturerOpt.isEmpty()) {
+            System.out.println("Manufacturer not found: " + manufacturerName);
+            return;
+        }
+
+        manufacturerOpt.ifPresent(m -> {
+            if (isSouvenirUnique(m, newSouvenir)) {
+                System.out.println("Souvenirs before add: " + m.getSouvenirs());
+                System.out.println("Souvenirs before add (file): " + load().get(0).getSouvenirs());
+                m.addSouvenir(newSouvenir);
+                System.out.println("Souvenirs after add: " + m.getSouvenirs());
+                System.out.println("Souvenirs after add (file): " + load().get(0).getSouvenirs());
                 save(manufacturers);
+                System.out.println("Souvenirs after save: " + m.getSouvenirs());
+                System.out.println("Souvenirs after save (file): " + load().get(0).getSouvenirs());
                 System.out.println("Souvenir added to Manufacturer '" + manufacturerName + "': " + newSouvenir.getName());
             } else {
                 System.out.println("Manufacturer '" + manufacturerName + "' already has the same souvenir: " + newSouvenir.getName());
             }
         });
-
-        if (manufacturerOpt.isEmpty()) {
-            System.out.println("Manufacturer not found: " + manufacturerName);
-        }
     }
 
     /**
@@ -160,6 +167,11 @@ public class SouvenirsService {
                 .filter(m -> m.getName().equals(manufacturerName))
                 .findFirst();
 
+        if (manufacturerOpt.isEmpty()) {
+            System.out.println("Manufacturer not found: " + manufacturerName);
+            return;
+        }
+
         manufacturerOpt.ifPresent(manufacturer -> {
             for (Souvenir newSouvenir : newSouvenirList) {
                 if (isSouvenirUnique(manufacturer, newSouvenir)) {
@@ -167,13 +179,10 @@ public class SouvenirsService {
                     System.out.println("Souvenir added to Manufacturer '" + manufacturerName + "': " + newSouvenir.getName());
                 } else {
                     System.out.println("Manufacturer '" + manufacturerName + "' already has the same souvenir: " + newSouvenir.getName());
+                    return;
                 }
             }
         });
-
-        if (manufacturerOpt.isEmpty()) {
-            System.out.println("Manufacturer not found: " + manufacturerName);
-        }
 
         save(manufacturers);
     }
@@ -258,8 +267,11 @@ public class SouvenirsService {
      */
     public void displayAllSouvenirsAndManufacturers() {
         List<Manufacturer> manufacturers = load();
+        if(manufacturers.isEmpty()) {
+            System.out.println("\n-------------\n(Empty)");
+        }
         manufacturers.forEach(m -> {
-            System.out.println("\n-------------\n" + m.toString());
+            System.out.println("\n-------------\n" + m.toString() + "\nSouvenir list:");
             m.getSouvenirs().forEach(s -> System.out.println("\t" + s));
         });
     }
@@ -316,7 +328,13 @@ public class SouvenirsService {
         manufacturers.stream()
                 .filter(m -> m.getName().equals(oldManufacturerName))
                 .findFirst()
-                .ifPresent(m -> m.setName(newManufacturerName));
+                .ifPresent(m -> {
+                    try {
+                        m.setName(newManufacturerName);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
         save(manufacturers);
     }
 
@@ -331,7 +349,13 @@ public class SouvenirsService {
         manufacturers.stream()
                 .filter(m -> m.getCountry().equals(oldManufacturerCountry))
                 .findFirst()
-                .ifPresent(m -> m.setCountry(newManufacturerCountry));
+                .ifPresent(m -> {
+                    try {
+                        m.setCountry(newManufacturerCountry);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
         save(manufacturers);
     }
 
@@ -367,7 +391,11 @@ public class SouvenirsService {
                 if (isSouvenirNameUnique) {
                     manufacturer.getSouvenirs().forEach(souvenir -> {
                         if (souvenir.getName().equals(oldSouvenirName)) {
-                            souvenir.setName(newSouvenirName);
+                            try {
+                                souvenir.setName(newSouvenirName);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
                             System.out.println("Souvenir name updated for Manufacturer '" + manufacturerName +
                                     "', Souvenir '" + oldSouvenirName + "' to '" + newSouvenirName + "':\n" + souvenir);
                         }
@@ -394,7 +422,11 @@ public class SouvenirsService {
             if (m.getName().equals(manufacturerName)) {
                 m.getSouvenirs().forEach(s -> {
                     if (s.getName().equals(souvenirName)) {
-                        s.setManufacturerDetails(newManufacturerDetails);
+                        try {
+                            s.setManufacturerDetails(newManufacturerDetails);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 });
             }
@@ -457,7 +489,11 @@ public class SouvenirsService {
             if (m.getName().equals(manufacturerName)) {
                 m.getSouvenirs().forEach(s -> {
                     if (s.getName().equals(souvenirName)) {
-                        s.setPrice(newPrice);
+                        try {
+                            s.setPrice(newPrice);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 });
             }
