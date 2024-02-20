@@ -154,14 +154,8 @@ public class SouvenirsService {
 
         manufacturerOpt.ifPresent(m -> {
             if (isSouvenirUnique(m, newSouvenir)) {
-                System.out.println("Souvenirs before add: " + m.getSouvenirs());
-                System.out.println("Souvenirs before add (file): " + load().get(0).getSouvenirs());
                 m.addSouvenir(newSouvenir);
-                System.out.println("Souvenirs after add: " + m.getSouvenirs());
-                System.out.println("Souvenirs after add (file): " + load().get(0).getSouvenirs());
                 save(manufacturers);
-                System.out.println("Souvenirs after save: " + m.getSouvenirs());
-                System.out.println("Souvenirs after save (file): " + load().get(0).getSouvenirs());
                 System.out.println("Souvenir added to Manufacturer '" + manufacturerName + "': " + newSouvenir.getName());
             } else {
                 System.out.println("Manufacturer '" + manufacturerName + "' already has the same souvenir: " + newSouvenir.getName());
@@ -251,10 +245,11 @@ public class SouvenirsService {
      */
     public List<Souvenir> findSouvenirsByManufacturerCountry(String existingManufacturerCountry) {
         List<Manufacturer> manufacturers = load();
-        Optional<Manufacturer> foundManufacturer = manufacturers.stream()
-                .filter(m -> m.getCountry().equals(existingManufacturerCountry))
-                .findFirst();
-        return foundManufacturer.isPresent() ? foundManufacturer.get().getSouvenirs() : new ArrayList<>();
+
+        return manufacturers.stream()
+                .filter(manufacturer -> manufacturer.getCountry().equalsIgnoreCase(existingManufacturerCountry))
+                .flatMap(manufacturer -> manufacturer.getSouvenirs().stream())
+                .toList();
     }
 
     /**
@@ -363,21 +358,20 @@ public class SouvenirsService {
     /**
      * Updates the country of the manufacturer with the specified old country to the new country and saves the updated list.
      *
-     * @param oldManufacturerCountry The current country of the manufacturer.
+     * @param manufacturerName The current name of the manufacturer.
      * @param newManufacturerCountry The new country for the manufacturer.
      */
-    public void updateManufacturerCountry(String oldManufacturerCountry, String newManufacturerCountry) {
+    public void updateManufacturerCountry(String manufacturerName, String newManufacturerCountry) {
         List<Manufacturer> manufacturers = load();
-        manufacturers.stream()
-                .filter(m -> m.getCountry().equals(oldManufacturerCountry))
-                .findFirst()
-                .ifPresent(m -> {
-                    try {
-                        m.setCountry(newManufacturerCountry);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        manufacturers.forEach(manufacturer -> {
+            if (manufacturer.getName().equals(manufacturerName)) {
+                try {
+                    manufacturer.setCountry(newManufacturerCountry);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         save(manufacturers);
     }
 

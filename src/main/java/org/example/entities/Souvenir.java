@@ -160,7 +160,7 @@ public class Souvenir implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("Souvenir(name = %s, manufacturerDetails = %s, releaseDate = %s, price = %s)", this.name, this.manufacturerDetails, this.releaseDate, this.price);
+        return String.format("Souvenir(\n\t\tname = %s, \n\t\tmanufacturerDetails = %s, \n\t\treleaseDate = %s, \n\t\tprice = %s)", this.name, this.manufacturerDetails, this.releaseDate, this.price);
     }
 
     /**
