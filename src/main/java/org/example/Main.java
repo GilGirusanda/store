@@ -42,7 +42,7 @@ public class Main {
                 case 2 -> addSouvenir(scanner, souvenirsService);
                 case 3 -> souvenirsService.displayAllSouvenirsAndManufacturers();
                 case 4 -> {
-                    System.out.println("Exiting the program.");
+                    System.out.println("Goodbye!\nExiting...");
                     System.exit(0);
                 }
                 case 5 -> displaySouvenirsByManufacturer(scanner, souvenirsService);
