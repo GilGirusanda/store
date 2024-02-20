@@ -263,6 +263,19 @@ public class SouvenirsService {
     }
 
     /**
+     * Finds and returns the list of manufacturers with souvenirs having prices lower than the specified limit.
+     *
+     * @param priceLimit The price limit to filter manufacturers.
+     * @return The list of manufacturers with souvenirs having prices lower than the specified limit.
+     */
+    public List<Manufacturer> findManufacturersByPriceLowerThan(double priceLimit) {
+        List<Manufacturer> manufacturers = load();
+        return manufacturers.stream()
+                .filter(manufacturer -> manufacturer.getSouvenirs().stream().anyMatch(souvenir -> souvenir.getPrice() < priceLimit))
+                .toList();
+    }
+
+    /**
      * Displays information about all souvenirs and their manufacturers.
      */
     public void displayAllSouvenirsAndManufacturers() {
