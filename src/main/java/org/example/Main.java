@@ -6,12 +6,8 @@ import org.example.services.SouvenirsService;
 import org.example.storage.DataManager;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -19,6 +15,10 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         DataManager dataManager = new DataManager("souvenirs_data.txt");
         SouvenirsService souvenirsService = new SouvenirsService(dataManager);
+
+        // To fill the file with mock data
+        // it's needed to have EMPTY file
+        souvenirsService.addMoreMockData();
 
         while (true) {
             System.out.println("\nChoose an option:");
@@ -112,14 +112,14 @@ public class Main {
         System.out.println("Enter Manufacturer name:");
         String manufacturerName = scanner.nextLine();
         souvenirsService.findSouvenirsByManufacturerName(manufacturerName)
-                .forEach(System.out::println);
+                .forEach(s->System.out.println("-----------\n" + s));
     }
 
     private static void displaySouvenirsByCountry(Scanner scanner, SouvenirsService souvenirsService) {
         System.out.println("Enter Manufacturer country:");
         String country = scanner.nextLine();
         souvenirsService.findSouvenirsByManufacturerCountry(country)
-                .forEach(System.out::println);
+                .forEach(s->System.out.println("-----------\n" + s));
     }
 
     private static void displayManufacturersByPrice(Scanner scanner, SouvenirsService souvenirsService) {

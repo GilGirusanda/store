@@ -1,6 +1,5 @@
 package org.example.services;
 
-import jdk.jshell.execution.LoaderDelegate;
 import org.example.entities.Manufacturer;
 import org.example.entities.Souvenir;
 import org.example.storage.DataManager;
@@ -63,18 +62,25 @@ public class SouvenirsService {
     }
 
     public void addMoreMockData() {
+        if(!load().isEmpty()) {
+            System.out.println("Can't insert test data.\nFile should be empty.");
+            return;
+        }
+
+        System.out.println("Inserting test records...");
         List<Manufacturer> mockManufacturers = Arrays.asList(
                 createManufacturer("ABC Souvenirs", "USA", Arrays.asList(
-                        createSouvenir("Statue of Liberty Figurine", "123 Main St, New York, NY\nPhone: 555-1234\nContact: John Doe", LocalDateTime.now(), 19.99),
-                        createSouvenir("NY Skyline Mug", "123 Main St, New York, NY\nPhone: 555-1234\nContact: Jane Smith", LocalDateTime.now(), 9.99)
+                        createSouvenir("Statue of Liberty Figurine", "123 Main St, New York, NY\n\t\tPhone: 555-1234\n\t\tContact: John Doe", LocalDateTime.now().minusYears(21), 19.99),
+                        createSouvenir("Mug", "123 Main St, New York, NY\n\t\tPhone: 555-1234\n\t\tContact: Jane Smith", LocalDateTime.now().minusYears(10), 9.99)
                 )),
                 createManufacturer("Eiffel Treasures", "France", Arrays.asList(
-                        createSouvenir("Eiffel Tower Keychain", "456 Rue de la Tour, Paris\nPhone: 33-1-9876\nContact: Pierre Dupont", LocalDateTime.now(), 5.99),
-                        createSouvenir("Parisian Art Canvas", "456 Rue de la Tour, Paris\nPhone: 33-1-9876\nContact: Marie Leclerc", LocalDateTime.now(), 29.99)
+                        createSouvenir("Eiffel Tower Keychain", "456 Rue de la Tour, Paris\n\t\tPhone: 33-1-9876\n\t\tContact: Pierre Dupont", LocalDateTime.now().minusYears(3), 5.99),
+                        createSouvenir("Parisian Art Canvas", "456 Rue de la Tour, Paris\n\t\tPhone: 33-1-9876\n\t\tContact: Marie Leclerc", LocalDateTime.now(), 29.99)
                 )),
                 createManufacturer("Tokyo Trinkets", "Japan", Arrays.asList(
-                        createSouvenir("Cherry Blossom Fan", "789 Sakura Dori, Tokyo\nPhone: 81-3-5432\nContact: Takeshi Yamada", LocalDateTime.now(), 12.99),
-                        createSouvenir("Tokyo Skyline Puzzle", "789 Sakura Dori, Tokyo\nPhone: 81-3-5432\nContact: Yuki Tanaka", LocalDateTime.now(), 17.99)
+                        createSouvenir("Fan", "789 Sakura Dori, Tokyo\n\t\tPhone: 81-3-5432\n\t\tContact: Takeshi Yamada", LocalDateTime.now(), 12.99),
+                        createSouvenir("Sport Master Jordan Cap", "789 Sakura Dori, Tokyo\n\t\tPhone: 81-3-5432\n\t\tContact: Takeshi Yamada", LocalDateTime.now().minusYears(1), 122.99),
+                        createSouvenir("Tokyo Skyline Puzzle", "789 Sakura Dori, Tokyo\n\t\tPhone: 81-3-5432\n\t\tContact: Yuki Tanaka", LocalDateTime.now(), 17.99)
                 ))
         );
 
