@@ -32,9 +32,9 @@ public class DataManager {
     private void checkAndCreateFile() {
         if (!fileExists(filename)) {
             createFile(filename);
-            System.out.println("File created: " + filename);
+            System.out.println("New file created: " + filename);
         } else {
-            System.out.println("File already exists: " + filename);
+            System.out.println("File already exists, opening: " + filename);
         }
     }
 
