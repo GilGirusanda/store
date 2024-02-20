@@ -112,7 +112,6 @@ public class Manufacturer implements Serializable {
      */
     @Override
     public String toString() {
-//        return String.format("Manufacturer(\nname = %s, \ncountry = %s, \nsouvenirs = %s)", this.name, this.country, this.souvenirs);
         return String.format("Manufacturer(\nname = %s, \ncountry = %s)", this.name, this.country);
     }
 

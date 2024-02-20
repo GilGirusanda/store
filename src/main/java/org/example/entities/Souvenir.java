@@ -20,12 +20,6 @@ public class Souvenir implements Serializable {
     private String manufacturerDetails;
     private LocalDateTime releaseDate;
     private double price;
-//    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-//    public static final DateTimeFormatter DATE_FORMATTER = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy[ [HH][:mm][:ss][.SSS]]")
-//                    .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-//                    .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-//                    .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-//                    .toFormatter();
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 

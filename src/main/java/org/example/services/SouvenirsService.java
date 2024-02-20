@@ -8,6 +8,7 @@ import org.example.storage.DataManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,11 +58,47 @@ public class SouvenirsService {
      */
     public List<Manufacturer> load() {
         List<Manufacturer> manufacturers = dataManager.loadData();
-        if(manufacturers == null) {
-//            System.out.println("No data found in the file or error loading data. Returning an empty list.");
-            return new ArrayList<>();
-        }
+        if(manufacturers == null) return new ArrayList<>();
         return manufacturers;
+    }
+
+    public void addMoreMockData() {
+        List<Manufacturer> mockManufacturers = Arrays.asList(
+                createManufacturer("ABC Souvenirs", "USA", Arrays.asList(
+                        createSouvenir("Statue of Liberty Figurine", "123 Main St, New York, NY\nPhone: 555-1234\nContact: John Doe", LocalDateTime.now(), 19.99),
+                        createSouvenir("NY Skyline Mug", "123 Main St, New York, NY\nPhone: 555-1234\nContact: Jane Smith", LocalDateTime.now(), 9.99)
+                )),
+                createManufacturer("Eiffel Treasures", "France", Arrays.asList(
+                        createSouvenir("Eiffel Tower Keychain", "456 Rue de la Tour, Paris\nPhone: 33-1-9876\nContact: Pierre Dupont", LocalDateTime.now(), 5.99),
+                        createSouvenir("Parisian Art Canvas", "456 Rue de la Tour, Paris\nPhone: 33-1-9876\nContact: Marie Leclerc", LocalDateTime.now(), 29.99)
+                )),
+                createManufacturer("Tokyo Trinkets", "Japan", Arrays.asList(
+                        createSouvenir("Cherry Blossom Fan", "789 Sakura Dori, Tokyo\nPhone: 81-3-5432\nContact: Takeshi Yamada", LocalDateTime.now(), 12.99),
+                        createSouvenir("Tokyo Skyline Puzzle", "789 Sakura Dori, Tokyo\nPhone: 81-3-5432\nContact: Yuki Tanaka", LocalDateTime.now(), 17.99)
+                ))
+        );
+
+        save(mockManufacturers);
+    }
+
+    private Manufacturer createManufacturer(String name, String country, List<Souvenir> souvenirs) {
+        try {
+            Manufacturer manufacturer = new Manufacturer(name, country);
+            manufacturer.addSouvenirs(souvenirs);
+            return manufacturer;
+        } catch (Exception e) {
+            System.out.println("Error creating manufacturer: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private Souvenir createSouvenir(String name, String manufacturerDetails, LocalDateTime releaseDate, double price) {
+        try {
+            return new Souvenir(name, manufacturerDetails, releaseDate, price);
+        } catch (Exception e) {
+            System.out.println("Error creating souvenir: " + e.getMessage());
+            return null;
+        }
     }
 
     /**
@@ -103,20 +140,6 @@ public class SouvenirsService {
                 .noneMatch(souvenir -> souvenir.getName().equals(newSouvenir.getName()));
     }
 
-    /**
-     * Adds a new souvenir to the specified manufacturer if the souvenir is not already present.
-     *
-     * @param manufacturerName The name of the manufacturer to add the souvenir to.
-     * @param newSouvenir      The new souvenir to be added.
-     */
-//    public void addSouvenir(String manufacturerName, Souvenir newSouvenir) {
-//        List<Manufacturer> manufacturers = load();
-//        manufacturers.stream()
-//                .filter(m -> m.getName().equals(manufacturerName))
-//                .findFirst()
-//                .ifPresent(m -> m.addSouvenir(newSouvenir));
-//        save(manufacturers);
-//    }
     public void addSouvenir(String manufacturerName, Souvenir newSouvenir) {
         List<Manufacturer> manufacturers = load();
 
@@ -146,20 +169,6 @@ public class SouvenirsService {
         });
     }
 
-    /**
-     * Adds a list of new souvenirs to the manufacturer with the specified name and saves the updated list.
-     *
-     * @param manufacturerName The name of the manufacturer to which souvenirs will be added.
-     * @param newSouvenirList  The list of new souvenirs to be added.
-     */
-//    public void addAllSouvenirs(String manufacturerName, List<Souvenir> newSouvenirList) {
-//        List<Manufacturer> manufacturers = load();
-//        manufacturers.stream()
-//                .filter(m -> m.getName().equals(manufacturerName))
-//                .findFirst()
-//                .ifPresent(m -> m.addSouvenirs(newSouvenirList));
-//        save(manufacturers);
-//    }
     public void addAllSouvenirs(String manufacturerName, List<Souvenir> newSouvenirList) {
         List<Manufacturer> manufacturers = load();
 
@@ -372,26 +381,6 @@ public class SouvenirsService {
         save(manufacturers);
     }
 
-    /**
-     * Updates the name of a specific souvenir for the specified manufacturer.
-     *
-     * @param manufacturerName  The name of the manufacturer.
-     * @param oldSouvenirName   The current name of the souvenir to be updated.
-     * @param newSouvenirName   The new name for the souvenir.
-     */
-//    public void updateSouvenirName(String manufacturerName, String oldSouvenirName, String newSouvenirName) {
-//        List<Manufacturer> manufacturers = load();
-//        manufacturers.forEach(m -> {
-//            if (m.getName().equals(manufacturerName)) {
-//                m.getSouvenirs().forEach(s -> {
-//                    if (s.getName().equals(oldSouvenirName)) {
-//                        s.setName(newSouvenirName);
-//                    }
-//                });
-//            }
-//        });
-//        save(manufacturers);
-//    }
     public void updateSouvenirName(String manufacturerName, String oldSouvenirName, String newSouvenirName) {
         List<Manufacturer> manufacturers = load();
 

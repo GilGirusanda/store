@@ -35,7 +35,12 @@ public class Main {
             System.out.println("12. Remove Manufacturer and Souvenirs");
 
             System.out.print("Your choice: ");
-            int choice = scanner.nextInt();
+            int choice = 3;
+            try {
+                choice = scanner.nextInt();
+            } catch (java.util.InputMismatchException ex) {
+                choice=-1;
+            }
             scanner.nextLine();
 
             switch (choice) {
