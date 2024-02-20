@@ -34,6 +34,7 @@ public class Main {
             System.out.println("11. Edit Manufacturer");
             System.out.println("12. Remove Manufacturer and Souvenirs");
 
+            System.out.print("Your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
